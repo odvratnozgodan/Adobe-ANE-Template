@@ -1,0 +1,8 @@
+.DS_Store
+.project
+.classpath
+.settings
+project.properties
+.actionScriptProperties
+.flexLibProperties
+.flexProperties

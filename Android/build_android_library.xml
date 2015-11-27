@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="extension" default="all">
+  
+  
+  <property file="build_android_library.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.bundle/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.tox/**"/>
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.war"/>
+    <include name="*.ear"/>
+    <include name="*.apk"/>
+    <include name="*.zip"/>
+    <include name="*.swc"/>
+    <include name="*.ane"/>
+    <include name="*.egg"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+    <exclude name="**/?*.aj"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.android_5.0.1_google_apis" value="${jdk.home.android_5.0.1_google_apis}/../../../../Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/bin"/>
+  <path id="jdk.classpath.android_5.0.1_google_apis">
+    <fileset dir="${jdk.home.android_5.0.1_google_apis}">
+      <include name="platforms/android-21/android.jar"/>
+      <include name="add-ons/addon-google_apis-google-21/libs/effects.jar"/>
+      <include name="add-ons/addon-google_apis-google-21/libs/usb.jar"/>
+      <include name="add-ons/addon-google_apis-google-21/libs/maps.jar"/>
+      <include name="platforms/android-21/data/res"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.android_5.0.1_google_apis}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.android_5.0.1_google_apis}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.android_5.0.1_google_apis"/>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.libs.classpath">
+    <fileset dir="${basedir}/libs">
+      <patternset refid="library.patterns"/>
+    </fileset>
+  </path>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module Extension -->
+  
+  <dirname property="module.extension.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.extension" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.extension" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.extension" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.extension" value="-encoding UTF-8 -source 1.6 -target 1.6 ${compiler.args}"/>
+  
+  <property name="extension.output.dir" value="${module.extension.basedir}/out/production/Extension"/>
+  <property name="extension.testoutput.dir" value="${module.extension.basedir}/out/test/Extension"/>
+  
+  <path id="extension.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="extension.module.production.classpath">
+    <path refid="${module.jdk.classpath.extension}"/>
+    <path refid="library.libs.classpath"/>
+  </path>
+  
+  <path id="extension.runtime.production.module.classpath">
+    <pathelement location="${extension.output.dir}"/>
+    <path refid="library.libs.classpath"/>
+  </path>
+  
+  <path id="extension.module.classpath">
+    <path refid="${module.jdk.classpath.extension}"/>
+    <pathelement location="${extension.output.dir}"/>
+    <path refid="library.libs.classpath"/>
+  </path>
+  
+  <path id="extension.runtime.module.classpath">
+    <pathelement location="${extension.testoutput.dir}"/>
+    <pathelement location="${extension.output.dir}"/>
+    <path refid="library.libs.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.extension">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.extension">
+    <patternset refid="excluded.from.module.extension"/>
+  </patternset>
+  
+  <path id="extension.module.sourcepath">
+    <dirset dir="${module.extension.basedir}">
+      <include name="src"/>
+      <include name="gen"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.extension" depends="compile.module.extension.production,compile.module.extension.tests" description="Compile module Extension"/>
+  
+  <target name="compile.module.extension.production" description="Compile module Extension; production classes">
+    <mkdir dir="${extension.output.dir}"/>
+    <javac destdir="${extension.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.extension}/javac">
+      <compilerarg line="${compiler.args.extension}"/>
+      <bootclasspath refid="extension.module.bootclasspath"/>
+      <classpath refid="extension.module.production.classpath"/>
+      <src refid="extension.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.extension"/>
+    </javac>
+    
+    <copy todir="${extension.output.dir}">
+      <fileset dir="${module.extension.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.extension.basedir}/gen">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.extension.tests" depends="compile.module.extension.production" description="compile module Extension; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.extension" description="cleanup module">
+    <delete dir="${extension.output.dir}"/>
+    <delete dir="${extension.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.extension" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.extension" description="build all modules"/>
+  
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.extension:jar" value="${basedir}/bin"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="temp.jar.path.Extension.jar" value="${artifacts.temp.dir}/Extension.jar"/>
+  </target>
+  
+  <target name="artifact.extension:jar" depends="init.artifacts, compile.module.extension" description="Build &#39;Extension:jar&#39; artifact">
+    <property name="artifact.temp.output.extension:jar" value="${artifacts.temp.dir}/Extension_jar"/>
+    <mkdir dir="${artifact.temp.output.extension:jar}"/>
+    <jar destfile="${temp.jar.path.Extension.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset dir="${extension.output.dir}"/>
+    </jar>
+    <copy file="${temp.jar.path.Extension.jar}" tofile="${artifact.temp.output.extension:jar}/Extension.jar"/>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.extension:jar" description="Build all artifacts">
+    <mkdir dir="${artifact.output.extension:jar}"/>
+    <copy todir="${artifact.output.extension:jar}">
+      <fileset dir="${artifact.temp.output.extension:jar}"/>
+    </copy>
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>

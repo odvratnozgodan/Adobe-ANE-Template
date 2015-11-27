@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<application xmlns="http://ns.adobe.com/air/application/18.0">
+
+    <id>eu.amodo.testApp</id>
+
+    <filename>Main</filename>
+
+    <name>Main</name>
+
+    <versionNumber>1.0.0</versionNumber>
+
+    <initialWindow>
+        <content>Main.swf</content>
+
+        <visible>true</visible>
+
+        <autoOrients>false</autoOrients>
+
+        <fullScreen>false</fullScreen>
+    </initialWindow>
+
+
+
+    <!-- Android specific tags that get passed to AndroidManifest.xml file. -->
+    <android>
+        <manifestAdditions>
+            <![CDATA[
+            <manifest android:installLocation="auto">
+                <uses-permission android:name="android.permission.INTERNET"/>
+
+                <!--<uses-feature android:required="true" android:name="android.hardware.touchscreen.multitouch"/>-->
+                <!--<application android:enabled="true">
+                    <activity android:excludeFromRecents="false">
+                        <intent-filter>
+                            <action android:name="android.intent.action.MAIN"/>
+                            <category android:name="android.intent.category.LAUNCHER"/>
+                        </intent-filter>
+                    </activity>
+                </application>-->
+            </manifest>
+            ]]>
+            </manifestAdditions>
+
+    </android>
+
+    <iPhone>
+        <requestedDisplayResolution>high</requestedDisplayResolution>
+        <InfoAdditions><![CDATA[
+        				<key>MinimumOSVersion</key>
+        					<string>6.1</string>
+        				<key>UIDeviceFamily</key>
+        					<array>
+        						<string>1</string>
+        					</array>
+						<key>UIViewControllerBasedStatusBarAppearance</key>
+							<false/>
+						<key>UIStatusBarStyle</key>
+							<string>UIStatusBarStyleDefault</string>
+        					]]></InfoAdditions>
+        <Entitlements>
+            <![CDATA[
+            ]]>
+        </Entitlements>
+    </iPhone>
+
+
+    <extensions>
+        <extensionID>eu.amodo.extension</extensionID>
+    </extensions>
+
+</application>
